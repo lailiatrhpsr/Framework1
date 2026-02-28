@@ -56,6 +56,13 @@
                         SIGN IN
                         </button>
                     </div>
+                    
+                    <div class="mt-3 d-grid gap-2"> 
+                        <a href="{{ route('google.login') }}" class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn"> 
+                            <i class="fa fa-google"></i> 
+                            Sign in with Google 
+                        </a> 
+                    </div>
 
                     <div class="my-2 d-flex justify-content-between align-items-center">
                         <div class="form-check">

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('id_google', 256)->nullable(); 
+            $table->string('otp', 6)->nullable(); 
         });
     }
 

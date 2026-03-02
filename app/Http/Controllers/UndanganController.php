@@ -8,8 +8,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class UndanganController extends Controller
 {
-    class UndanganController extends Controller
-{
     public function __construct() {
         $this->middleware('auth');
     }
@@ -23,5 +21,4 @@ class UndanganController extends Controller
         $pdf = Pdf::loadView('undangan.pdf', $data)->setPaper('a4', 'portrait');
         return $pdf->download('Undangan_Kegiatan.pdf');
     }
-}
 }

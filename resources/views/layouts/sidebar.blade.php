@@ -31,6 +31,13 @@
       </a>
     </li>
 
+    <li class="nav-item"> 
+      <a class="nav-link" href="{{ route('barang.index') }}"> 
+        <span class="menu-title">Barang</span> 
+        <i class="mdi mdi-package-variant menu-icon"></i> 
+      </a> 
+    </li>
+
     <li class="nav-item nav-category" style="margin-top: 15px; padding-left: 20px;">
         <span class="text-muted small text-uppercase">PDF</span>
     </li>

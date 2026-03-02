@@ -22,7 +22,7 @@ class SertifikatController extends Controller
             'judul' => $request->query('judul', 'Sertifikat Partisipasi')
         ];
         
-        $pdf = Pdf::loadView('sertifikat.pdf', $data)->setPaper('a4', 'landscape');
-        return $pdf->download('Sertifikat.pdf');
+        $pdf =\Barryvdh\DomPDF\Facade\Pdf::loadView('sertifikat.pdf', $data)->setPaper('a4', 'landscape');
+        return $pdf->download('sertifikat.pdf');
     }
 }

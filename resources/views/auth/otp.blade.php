@@ -19,19 +19,19 @@
             <div class="content-wrapper d-flex align-items-center auth">
             <div class="row flex-grow">
                 <div class="col-lg-4 mx-auto">
-                <div class="auth-form-light text-left p-5">
-                    <h4>Verifikasi OTP</h4>
-                    <h6 class="font-weight-light">Masukkan kode OTP yang dikirim ke email {{ $email }}</h6>
-                    <form method="POST" action="{{ route('otp.verify.post') }}"> 
-                        @csrf 
-                        <div class="form-group"> 
-                            <input id="otp" type="text" class="form-control" name="otp" required placeholder="Masukkan OTP"> 
-                        </div> 
-                        <button type="submit" class="btn btn-primary">
-                            Verifikasi
-                        </button> 
-                    </form>
-                </div>
+                    <div class="auth-form-light text-left p-5">
+                        <h4>Verifikasi OTP</h4>
+                        <h6 class="font-weight-light">Masukkan kode OTP yang dikirim</h6>
+                        <form method="POST" action="{{ route('otp.verify.post') }}"> 
+                            @csrf 
+                            <div class="form-group"> 
+                                <input id="otp" type="text" class="form-control" name="otp" required placeholder="Masukkan OTP"> 
+                            </div> 
+                            <button type="submit" class="btn btn-primary">
+                                Verifikasi
+                            </button> 
+                        </form>
+                    </div>
                 </div>
             </div>
             </div>

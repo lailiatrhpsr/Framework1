@@ -61,7 +61,8 @@ class LoginController extends Controller
             \Log::error("Gmail API error: ".$e->getMessage());
         }
 
-        return redirect()->route('otp.verify', ['email' => $user->email]);
+        session(['otp_email' => $user->email]); 
+        return redirect()->route('otp.verify');
     }
 
 
@@ -94,12 +95,12 @@ class LoginController extends Controller
 
     public function verifyOtp(Request $request) 
     { 
-        $request->validate([ 
-            'email' => 'required|email', 
+        $request->validate([
             'otp' => 'required|string|size:6' 
         ]); 
 
-        $user = User::where('email', $request->email)->first(); 
+        $email = session('otp_email');
+        $user = User::where('email', $email)->first();
 
         if ($user && $user->otp == $request->otp) { 
 

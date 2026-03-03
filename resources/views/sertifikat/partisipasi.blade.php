@@ -13,7 +13,7 @@
     <div class="title">SERTIFIKAT</div>
     <div class="sub-title">Diberikan secara bangga kepada:</div>
     <div class="name">{{ $nama }}</div>
-    <p>Atas pencapaian luar biasa dalam menyelesaikan:</p>
+    <p>Atas pencapaian luar biasa dalam menghadiri:</p>
     <h3>{{ $judul }}</h3>
     <p>Diterbitkan pada: {{ date('d F Y') }}</p>
 </body>

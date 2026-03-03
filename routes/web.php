@@ -30,10 +30,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home')->middleware('auth');
     
     Route::get('/sertifikat', [SertifikatController::class, 'index'])->name('sertifikat.index');
-    Route::get('/sertifikat/download/{judul}', [SertifikatController::class, 'download'])->name('sertifikat.download');
+    Route::get('/sertifikat/download/{jenis}', [SertifikatController::class, 'download'])->name('sertifikat.download');
 
     // Rute khusus Undangan
-    Route::get('/undangan/download', [UndanganController::class, 'download'])->name('undangan.download');
+    Route::get('/undangan', [UndanganController::class, 'index'])->name('undangan.index');
+    Route::get('/undangan/download/{jenis}', [UndanganController::class, 'download'])->name('undangan.download');
 
     // Kategori
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');

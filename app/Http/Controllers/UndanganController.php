@@ -12,13 +12,25 @@ class UndanganController extends Controller
         $this->middleware('auth');
     }
 
-    public function download() {
-        $data = [
-            'nama' => Auth::user()->name,
-            'nomor' => '001/RSHP-UNAIR/2026'
-        ];
+    public function index() { 
+         return view('undangan.index'); }
+
+    public function download($jenis) { 
+        $data = [ 
+            'nama' => Auth::user()->name, 
+            'nomor' => '001/RSHP/III/2026',
+            'tanggal' => '10 Maret 2026', 
+            'waktu' => '09.00 WIB', 
+            'tempat' => 'Ruang Rapat Toko Buku Husada Utama Raya', 
+            'jenis' => $jenis,]; 
         
-        $pdf = Pdf::loadView('undangan.pdf', $data)->setPaper('a4', 'portrait');
-        return $pdf->download('Undangan_Kegiatan.pdf');
-    }
+        $templates = [ 
+            'verifikasi' => 'undangan.verifikasi', 
+            'rapat' => 'undangan.rapat', ]; 
+         
+        if (!array_key_exists($jenis, $templates)) { 
+            abort(404, 'Template undangan tidak ditemukan'); } 
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView($templates[$jenis], 
+        $data)->setPaper('a4', 'portrait'); return $pdf->download("undangan_{$jenis}.pdf"); }
 }

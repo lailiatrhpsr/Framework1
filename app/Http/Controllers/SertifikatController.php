@@ -16,13 +16,24 @@ class SertifikatController extends Controller
         return view('sertifikat.index');
     }
 
-    public function download(Request $request) {
+    public function download($jenis) {
         $data = [
             'nama' => Auth::user()->name,
-            'judul' => $request->query('judul', 'Sertifikat Partisipasi')
+            'judul' => ucfirst($jenis),
+            'jenis' => $jenis,
         ];
         
-        $pdf =\Barryvdh\DomPDF\Facade\Pdf::loadView('sertifikat.pdf', $data)->setPaper('a4', 'landscape');
-        return $pdf->download('sertifikat.pdf');
+        $templates = [
+            'kelulusan' => 'sertifikat.kelulusan',
+            'partisipasi' => 'sertifikat.partisipasi',
+            'teladan' => 'sertifikat.teladan',
+        ];
+
+        if (!array_key_exists($jenis, $templates)) {
+            abort(404, 'Template sertifikat tidak ditemukan');
+        }
+
+        $pdf = Pdf::loadView($templates[$jenis], $data)->setPaper('a4', 'landscape');
+        return $pdf->download("sertifikat_{$jenis}.pdf");
     }
 }

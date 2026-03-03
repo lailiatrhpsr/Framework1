@@ -50,7 +50,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('undangan.download') }}">
+      <a class="nav-link" href="{{ route('undangan.index') }}">
         <span class="menu-title">Cetak Undangan</span>
         <i class="mdi mdi-email-open menu-icon"></i>
       </a>

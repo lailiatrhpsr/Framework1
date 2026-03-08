@@ -79,7 +79,7 @@ class BarangController extends Controller
         }
 
         $pdf = \PDF::loadView('admin.barang.label_barang', compact('barang', 'x', 'y'))
-            ->setPaper([0, 0, 323.15, 510.24], 'landscape');
+            ->setPaper([0, 0, 595.28, 467.72], 'portrait');
         return $pdf->stream('label-barang.pdf');
     }
 }

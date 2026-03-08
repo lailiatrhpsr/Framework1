@@ -13,25 +13,26 @@
             font-size: 10px;
         }
 
-        /* Ukuran Kertas TnJ 108: 180mm x 114mm */
+        /* Ukuran Kertas TnJ 108 */
         .container {
-            width: 180mm;
-            height: 114mm;
+            width: 210mm;
+            height: 165mm;
             margin: 0;
             padding: 0;
         }
 
         table {
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 3mm 2mm;
             table-layout: fixed;
-            width: 100%;
+            width: auto;
             margin-left: 2mm; 
             margin-top: 2mm;
         }
 
         td {
-            width: 38mm;   /* lebar label */
-            height: 18mm;  /* tinggi label */
+            width: 38mm;   
+            height: 18mm;  
             vertical-align: middle;
             text-align: center;
             border: 0.1pt solid transparent; 

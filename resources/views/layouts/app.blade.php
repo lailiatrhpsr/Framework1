@@ -45,5 +45,6 @@
 <script src="{{ asset('assets/js/todolist.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.cookie.js') }}"></script>
 <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+@stack('scripts')
 </body>
 </html>

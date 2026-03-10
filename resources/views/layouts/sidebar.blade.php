@@ -31,11 +31,22 @@
       </a>
     </li>
 
-    <li class="nav-item"> 
-      <a class="nav-link" href="{{ route('barang.index') }}"> 
-        <span class="menu-title">Barang</span> 
-        <i class="mdi mdi-package-variant menu-icon"></i> 
-      </a> 
+    <li class="nav-item">
+      <a class="nav-link" href="#barangSub" data-bs-toggle="collapse">
+        <span class="menu-title">Barang</span>
+        <i class="mdi mdi-package-variant menu-icon"></i>
+      </a>
+      <ul class="collapse" id="barangSub">
+        <li><a class="nav-link" href="{{ route('barang.index') }}">Barang</a></li>
+        <li><a class="nav-link" href="{{ route('barang.html') }}">Barang (HTML)</a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('kota.index') }}">
+        <span class="menu-title">Kota</span>
+        <i class="mdi mdi-city menu-icon"></i>
+      </a>
     </li>
 
     <li class="nav-item nav-category" style="margin-top: 15px; padding-left: 20px;">

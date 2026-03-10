@@ -16,13 +16,15 @@
                 <h4 class="card-title">Tambah Kategori Baru</h4>
                 <p class="card-description"> Masukkan nama kategori buku </p>
                 
-                <form class="forms-sample" action="{{ route('kategori.store') }}" method="POST">
+                <form id="kategoriForm" class="forms-sample" action="{{ route('kategori.store') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="namaKategori">Nama Kategori</label>
                         <input type="text" name="nama_kategori" class="form-control" id="namaKategori" placeholder="Contoh: Novel, Komik, Biografi" required>
                     </div>
-                    <button type="submit" class="btn btn-gradient-primary me-2">Simpan</button>
+                    <button id="submitKategori" type="button" class="btn btn-gradient-primary me-2">
+                        Simpan
+                    </button>
                     <button type="reset" class="btn btn-light">Batal</button>
                 </form>
             </div>
@@ -68,3 +70,19 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.getElementById("submitKategori").addEventListener("click", function() {
+        const form = document.getElementById("kategoriForm");
+        if (!form.checkValidity()) {
+            form.reportValidity();
+        return;
+     }
+                    
+        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Loading...';
+        this.disabled = true;
+        form.submit();
+        });
+</script>
+@endpush

@@ -4,7 +4,7 @@
 <div class="container">
     <h2>Pilih Barang untuk Cetak Label</h2>
 
-    <form action="{{ route('barang.cetak') }}" method="POST">
+    <form id="cetakForm" action="{{ route('barang.cetak') }}" method="POST">
         @csrf
         <table class="table table-bordered">
             <thead>
@@ -37,8 +37,21 @@
             <label>Y (1-8):</label>
             <input type="number" name="y" min="1" max="8" required>
         </div>
-
-        <button type="submit" class="btn btn-success">Cetak PDF</button>
+        <button id="cetakBtn" type="submit" class="btn btn-primary">
+            <span id="cetakText">Cetak PDF</span>
+        </button>
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.getElementById("cetakForm").addEventListener("submit", function() {
+    const btn = document.getElementById("cetakBtn");
+    const btnText = document.getElementById("cetakText");
+
+    btnText.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Loading...';
+    btn.disabled = true;
+});
+</script>
+@endpush

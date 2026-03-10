@@ -14,17 +14,21 @@ class BarangController extends Controller
         return view('admin.barang.index', compact('barang'));
     }
 
-    public function create()
+    public function html()
     {
-        return view('admin.barang.create');
+        return view('admin.barang.html');
+    }
+
+    public function datatables()
+    {
+        return view('admin.barang.datatables'); 
     }
 
     public function store(Request $request)
     {
         $request->validate([ 
             'nama_barang' => 'required', 
-            'harga' => 'required|numeric', 
-            'stok' => 'required|integer', ]); 
+            'harga' => 'required|numeric',]); 
 
         Barang::create($request->all()); 
         return redirect()->route('barang.index')->with('success','Barang berhasil ditambahkan'); 

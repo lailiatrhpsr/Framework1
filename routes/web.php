@@ -45,10 +45,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
 
     // Barang
+    Route::get('/barang/html', [BarangController::class, 'html'])->name('barang.html');
+    Route::get('/barang/datatables', [BarangController::class, 'datatables'])->name('barang.datatables');
     Route::post('/barang/cetak', [BarangController::class, 'cetakLabel'])->name('barang.cetak');
     Route::get('/barang/label', [BarangController::class, 'labelIndex'])->name('barang.label');
     Route::resource('barang', BarangController::class);
 
-
+    Route::get('/kota', function () {
+        return view('admin.kota');
+    })->name('kota.index');
 
 });

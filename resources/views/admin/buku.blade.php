@@ -16,9 +16,8 @@
                 <h4 class="card-title">Tambah Koleksi Buku</h4>
                 <p class="card-description"> Masukkan detail buku baru </p>
                 
-                <form class="forms-sample" action="{{ route('buku.store') }}" method="POST">
+                <form id="bukuForm" class="forms-sample" action="{{ route('buku.store') }}" method="POST">
                     @csrf
-                    
                     <div class="form-group">
                         <label>Pilih Kategori</label>
                         <select class="form-control" name="idkategori" required>
@@ -28,23 +27,21 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label>Kode Buku</label>
                         <input type="text" name="kode" class="form-control" placeholder="Contoh: NV-01" required>
                     </div>
-
                     <div class="form-group">
                         <label>Judul Buku</label>
                         <input type="text" name="judul" class="form-control" placeholder="Judul Lengkap" required>
                     </div>
-
                     <div class="form-group">
                         <label>Pengarang</label>
                         <input type="text" name="pengarang" class="form-control" placeholder="Nama Pengarang" required>
                     </div>
-
-                    <button type="submit" class="btn btn-gradient-primary me-2">Simpan</button>
+                    <button id="submitBtn" type="button" class="btn btn-gradient-primary me-2">
+                        Simpan
+                    </button>
                     <button type="reset" class="btn btn-light">Batal</button>
                 </form>
             </div>
@@ -90,3 +87,18 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.getElementById("submitBtn").addEventListener("click", function() {
+        const form = document.getElementById("bukuForm");
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Loading...';
+        this.disabled = true;
+        form.submit();
+    });
+</script>
+@endpush

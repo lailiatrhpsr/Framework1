@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
   <h2>Tambah Barang</h2>
+  <a href="{{ route('barang.html') }}" class="btn btn-secondary">Versi HTML Table</a>
   <form id="barangForm">
     <input type="text" id="nama" placeholder="Nama barang" required>
     <input type="number" id="harga" placeholder="Harga barang" required>
@@ -56,9 +57,38 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <script>
+function saveBarang(id, nama, harga) {
+  let barang = JSON.parse(localStorage.getItem("barang")) || [];
+  barang.push({id, nama, harga});
+  localStorage.setItem("barang", JSON.stringify(barang));
+}
+
+function loadBarang() {
+  return JSON.parse(localStorage.getItem("barang")) || [];
+}
+
+function updateBarang(id, nama, harga) {
+  let barang = loadBarang();
+  barang = barang.map(b => b.id == id ? {id, nama, harga} : b);
+  localStorage.setItem("barang", JSON.stringify(barang));
+}
+
+function deleteBarang(id) {
+  let barang = loadBarang();
+  barang = barang.filter(b => b.id != id);
+  localStorage.setItem("barang", JSON.stringify(barang));
+}
+
 $(document).ready(function() {
   const table = $('#barangTable').DataTable();
 
+  // Render data dari localStorage saat halaman load
+  const barang = loadBarang();
+  barang.forEach(b => {
+    table.row.add([b.id, b.nama, b.harga]).draw();
+  });
+
+  // Tambah barang
   $("#barangForm").on("submit", function(e) {
     e.preventDefault();
     const btn = $("#submitBtn");
@@ -74,6 +104,7 @@ $(document).ready(function() {
     const id = Date.now();
 
     table.row.add([id, nama, harga]).draw();
+    saveBarang(id, nama, harga); 
 
     $("#nama").val("");
     $("#harga").val("");
@@ -87,7 +118,7 @@ $(document).ready(function() {
     $(this).css('cursor', 'pointer');
   });
 
-  // Klik row 
+  // Klik row → buka modal
   $('#barangTable tbody').on('click', 'tr', function() {
     const data = table.row(this).data();
     $('#modalId').val(data[0]);
@@ -97,14 +128,16 @@ $(document).ready(function() {
     $('#barangModal').modal('show');
   });
 
-  // Hapus row
+  // Hapus row + hapus dari localStorage
   $('#hapusBtn').on('click', function() {
     const row = $('#modalForm').data('row');
+    const id = $('#modalId').val();
+    deleteBarang(id);
     table.row(row).remove().draw();
     $('#barangModal').modal('hide');
   });
 
-  // Ubah row
+  // Ubah row + update localStorage
   $('#modalForm').on('submit', function(e) {
     e.preventDefault();
     const row = $('#modalForm').data('row');
@@ -113,15 +146,15 @@ $(document).ready(function() {
       this.reportValidity();
       return;
     }
-    // Spinner di tombol Ubah
     btn.html('<span class="spinner-border spinner-border-sm me-2"></span> Updating...');
     btn.prop("disabled", true);
 
-    table.row(row).data([
-      $('#modalId').val(),
-      $('#modalNama').val(),
-      $('#modalHarga').val()
-    ]).draw();
+    const id = $('#modalId').val();
+    const nama = $('#modalNama').val();
+    const harga = $('#modalHarga').val();
+
+    table.row(row).data([id, nama, harga]).draw();
+    updateBarang(id, nama, harga); 
 
     $('#barangModal').modal('hide');
     btn.html('Ubah');

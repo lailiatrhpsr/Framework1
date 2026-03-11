@@ -59,27 +59,79 @@
 
 @push('scripts')
 <script>
-document.querySelectorAll("form").forEach(function(form) {
-  form.addEventListener("submit", function(e) {
-    e.preventDefault();
-    const btn = form.querySelector("button[type='submit']");
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Loading...';
-    btn.disabled = true;
+// simpan & ambil data
+function saveBarang(id, nama, harga) {
+  let barang = JSON.parse(localStorage.getItem("barang")) || [];
+  barang.push({id, nama, harga});
+  localStorage.setItem("barang", JSON.stringify(barang));
+}
 
-    const nama = document.getElementById("nama").value;
-    const harga = document.getElementById("harga").value;
-    const id = Date.now();
+function loadBarang() {
+  return JSON.parse(localStorage.getItem("barang")) || [];
+}
 
-    const tableBody = document.querySelector("#barangTable tbody");
+function updateBarang(id, nama, harga) {
+  let barang = loadBarang();
+  barang = barang.map(b => b.id == id ? {id, nama, harga} : b);
+  localStorage.setItem("barang", JSON.stringify(barang));
+}
+
+function deleteBarang(id) {
+  let barang = loadBarang();
+  barang = barang.filter(b => b.id != id);
+  localStorage.setItem("barang", JSON.stringify(barang));
+}
+
+// submit form → tambah row + simpan ke localStorage
+document.getElementById("barangForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const btn = document.getElementById("submitBtn");
+  if (!this.checkValidity()) {
+    this.reportValidity();
+    return;
+  }
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Loading...';
+  btn.disabled = true;
+
+  const nama = document.getElementById("nama").value;
+  const harga = document.getElementById("harga").value;
+  const id = Date.now();
+
+  // Insert row ke tabel
+  const tableBody = document.querySelector("#barangTable tbody");
+  const newRow = tableBody.insertRow();
+  newRow.innerHTML = `<td>${id}</td><td>${nama}</td><td>${harga}</td>`;
+  newRow.style.cursor = "pointer";
+
+  // Simpan ke localStorage
+  saveBarang(id, nama, harga);
+
+  // Klik row → buka modal
+  newRow.addEventListener("click", function() {
+    const cells = newRow.querySelectorAll("td");
+    document.getElementById("modalId").value = cells[0].innerText;
+    document.getElementById("modalNama").value = cells[1].innerText;
+    document.getElementById("modalHarga").value = cells[2].innerText;
+    document.getElementById("modalForm").dataset.rowIndex = newRow.rowIndex;
+    new bootstrap.Modal(document.getElementById("barangModal")).show();
+  });
+
+  document.getElementById("nama").value = "";
+  document.getElementById("harga").value = "";
+
+  btn.innerHTML = '<span id="btnText">Simpan</span>';
+  btn.disabled = false;
+});
+
+// Saat halaman load → render data dari localStorage
+window.addEventListener("load", function() {
+  const barang = loadBarang();
+  const tableBody = document.querySelector("#barangTable tbody");
+  barang.forEach(b => {
     const newRow = tableBody.insertRow();
-    newRow.innerHTML = `<td>${id}</td><td>${nama}</td><td>${harga}</td>`;
+    newRow.innerHTML = `<td>${b.id}</td><td>${b.nama}</td><td>${b.harga}</td>`;
     newRow.style.cursor = "pointer";
 
-    // Klik row → buka modal
     newRow.addEventListener("click", function() {
       const cells = newRow.querySelectorAll("td");
       document.getElementById("modalId").value = cells[0].innerText;
@@ -88,23 +140,21 @@ document.querySelectorAll("form").forEach(function(form) {
       document.getElementById("modalForm").dataset.rowIndex = newRow.rowIndex;
       new bootstrap.Modal(document.getElementById("barangModal")).show();
     });
-
-    document.getElementById("nama").value = "";
-    document.getElementById("harga").value = "";
-
-    btn.innerHTML = '<span id="btnText">Simpan</span>';
-    btn.disabled = false;
   });
 });
 
-// Hapus row
+// Hapus row + hapus dari localStorage
 document.getElementById("hapusBtn").addEventListener("click", function() {
   const idx = document.getElementById("modalForm").dataset.rowIndex;
+  const row = document.getElementById("barangTable").rows[idx];
+  const id = row.cells[0].innerText;
+
+  deleteBarang(id); 
   document.getElementById("barangTable").deleteRow(idx);
   bootstrap.Modal.getInstance(document.getElementById("barangModal")).hide();
 });
 
-// Ubah row
+// Ubah row + update localStorage
 document.getElementById("modalForm").addEventListener("submit", function(e) {
   e.preventDefault();
   const idx = this.dataset.rowIndex;
@@ -116,12 +166,17 @@ document.getElementById("modalForm").addEventListener("submit", function(e) {
     return;
   }
 
-  // Spinner di tombol Ubah
   btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Updating...';
   btn.disabled = true;
 
-  row.cells[1].innerText = document.getElementById("modalNama").value;
-  row.cells[2].innerText = document.getElementById("modalHarga").value;
+  const id = document.getElementById("modalId").value;
+  const nama = document.getElementById("modalNama").value;
+  const harga = document.getElementById("modalHarga").value;
+
+  row.cells[1].innerText = nama;
+  row.cells[2].innerText = harga;
+
+  updateBarang(id, nama, harga); 
 
   bootstrap.Modal.getInstance(document.getElementById("barangModal")).hide();
 

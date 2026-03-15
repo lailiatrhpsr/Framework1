@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SertifikatController;
 use App\Http\Controllers\UndanganController;
+use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\POSController;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
@@ -55,4 +57,14 @@ Route::middleware(['auth'])->group(function () {
         return view('admin.kota');
     })->name('kota.index');
 
+    Route::get('/wilayah', [WilayahController::class, 'index'])->name('wilayah.index');
+    Route::get('/provinsi', [WilayahController::class, 'provinsi'])->name('wilayah.provinsi');
+    Route::get('/kota/{provinsi_id}', [WilayahController::class, 'kota'])->name('wilayah.kota');
+    Route::get('/kecamatan/{kota_id}', [WilayahController::class, 'kecamatan'])->name('wilayah.kecamatan');
+    Route::get('/kelurahan/{kecamatan_id}', [WilayahController::class, 'kelurahan'])->name('wilayah.kelurahan');
+
+    // Halaman utama kasir
+    Route::get('/pos', [POSController::class, 'index'])->name('pos.index');
+    Route::get('/pos/cek-barang/{kode}', [POSController::class, 'cekBarang']);
+    Route::post('/pos/simpan', [POSController::class, 'simpan'])->name('pos.simpan');
 });

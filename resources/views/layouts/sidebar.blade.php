@@ -32,6 +32,13 @@
     </li>
 
     <li class="nav-item">
+      <a class="nav-link" href="{{ route('pos.index') }}">
+        <span class="menu-title">Kaisr (POS)</span>
+        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item">
       <a class="nav-link" href="#barangSub" data-bs-toggle="collapse">
         <span class="menu-title">Barang</span>
         <i class="mdi mdi-package-variant menu-icon"></i>
@@ -46,6 +53,13 @@
       <a class="nav-link" href="{{ route('kota.index') }}">
         <span class="menu-title">Kota</span>
         <i class="mdi mdi-city menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('wilayah.index') }}">
+        <span class="menu-title">Wilayah</span>
+        <i class="mdi mdi-map menu-icon"></i>
       </a>
     </li>
 

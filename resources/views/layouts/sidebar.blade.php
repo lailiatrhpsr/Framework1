@@ -18,6 +18,13 @@
     </li>
 
     <li class="nav-item">
+      <a class="nav-link" href="{{ route('vendor.dashboard') }}">
+        <span class="menu-title">Vendor</span>
+        <i class="mdi mdi-vendor menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item">
       <a class="nav-link" href="{{ route('buku.index') }}">
         <span class="menu-title">Buku</span>
         <i class="mdi mdi-book menu-icon"></i>

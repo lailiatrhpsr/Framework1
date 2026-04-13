@@ -23,6 +23,10 @@ class User extends Authenticatable
         'password',
         'id_google',
         'otp',
+        'role',          
+        'guest_code',    
+        'phone_number',
+        'status_active',
     ];
 
     /**
@@ -44,4 +48,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+     public function pesanan()
+    {
+        return $this->hasMany(Pesanan::class, 'id_pesanan');
+    }
+
+    public function vendor()
+    {
+        return $this->hasOne(Vendor::class, 'id_vendor');
+    }
 }

@@ -16,6 +16,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PesananController;
 
+use App\Http\Controllers\CustomerController;
+
 // ----------------------
 // ROUTE UNTUK CUSTOMER
 // ----------------------
@@ -100,4 +102,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/vendor/{id_vendor}/pesanan', [VendorController::class, 'pesanan'])->name('vendor.pesanan.index');
         Route::get('/vendor/{id_vendor}/pesanan/{id}', [VendorController::class, 'showPesanan'])->name('vendor.pesanan.show');
         Route::get('/vendor/{id_vendor}/pesanan/lunas', [VendorController::class, 'pesananLunas'])->name('vendor.pesanan.lunas');
+
+    // route untuk customer
+    Route::get('/customer', [CustomerController::class, 'index'])->name('customer.data.index');
+    Route::get('/customer/create-blob', [CustomerController::class, 'createBlob'])->name('customer.create.blob');
+    Route::post('/customer/store-blob', [CustomerController::class, 'storeBlob'])->name('customer.store.blob');
+    Route::get('/customer/create-path', [CustomerController::class, 'createPath'])->name('customer.create.path');
+    Route::post('/customer/store-path', [CustomerController::class, 'storePath'])->name('customer.store.path');     
+    
 });

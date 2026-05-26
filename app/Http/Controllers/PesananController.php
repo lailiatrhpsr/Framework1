@@ -8,6 +8,10 @@ use App\Models\Pesanan;
 use App\Models\DetailPesanan;
 use App\Models\Menu;
 use App\Models\Vendor;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+
 
 class PesananController extends Controller
 {
@@ -162,10 +166,26 @@ class PesananController extends Controller
         return response()->json(['message' => 'Status pesanan diperbarui']);
     }
 
-    // Tampilkan detail pesanan
     public function show($id_pesanan)
     {
-        $pesanan = Pesanan::with('details.menu')->findOrFail($id_pesanan);
-        return view('customer.detailpesanan', compact('pesanan'));
+        $pesanan = Pesanan::findOrFail($id_pesanan);
+        $dataUri = null;
+
+        if ($pesanan->status == 'paid' || $pesanan->status == 'settlement') {
+            
+            $qrCode = new \Endroid\QrCode\QrCode(
+                data: $pesanan->id_pesanan,
+                encoding: new \Endroid\QrCode\Encoding\Encoding('UTF-8'),
+                size: 200,
+                margin: 10
+            );
+
+            $writer = new \Endroid\QrCode\Writer\PngWriter();
+            $result = $writer->write($qrCode);
+
+            $dataUri = $result->getDataUri();
+        }
+
+        return view('customer.detailpesanan', compact('pesanan', 'dataUri'));
     }
 }

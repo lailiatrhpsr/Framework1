@@ -69,9 +69,13 @@
                         <td>
                             @if(isset($barang[$barangIndex]))
                                 <div class="label-box">
+                                    <img src="data:image/png;base64,{{ $barang[$barangIndex]->barcode }}" 
+                                        alt="barcode" style="width:100%; height:auto;">
                                     <span class="nama">{{ $barang[$barangIndex]->nama_barang }}</span><br>
                                     <span class="harga">Rp {{ number_format($barang[$barangIndex]->harga,0,',','.') }}</span>
+                                    <p>ID: {{ $barang[$barangIndex]->id_barang }}</p>
                                 </div>
+
                             @endif
                         </td>
                     @endfor

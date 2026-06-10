@@ -77,6 +77,20 @@
       </a>
     </li>
 
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('kunjungan.index') }}">
+        <span class="menu-title">Kunjungan Toko</span>
+        <i class="mdi mdi-shopping menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('toko.index') }}">
+        <span class="menu-title">Toko</span>
+        <i class="mdi mdi-shopping menu-icon"></i>
+      </a>
+    </li>
+
     <li class="nav-item nav-category" style="margin-top: 15px; padding-left: 20px;">
         <span class="text-muted small text-uppercase">PDF</span>
     </li>

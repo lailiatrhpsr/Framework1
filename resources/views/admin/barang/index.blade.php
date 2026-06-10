@@ -72,6 +72,7 @@
                         </tbody>
                     </table>
                     <a href="{{ route('barang.label') }}" class="btn btn-primary">Cetak Label</a>
+                    <a href="{{ route('barang.scanner') }}" class="btn btn-primary"> Scanner Barang</a>
                 </div>
             </div>
         </div>

@@ -26,6 +26,21 @@ class BarangController extends Controller
         return view('admin.barang.datatables'); 
     }
 
+    public function scanner()
+    {
+        return view('admin.barang.scanner');
+    }
+
+    public function getBarang($id)
+    {
+        $barang = Barang::where('id_barang', $id)->first();
+        if (!$barang) {
+            return response()->json(['error' => 'Barang tidak ditemukan'], 404);
+        }
+        return response()->json($barang);
+    }
+
+
     public function store(Request $request)
     {
         $request->validate([ 

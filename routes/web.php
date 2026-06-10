@@ -9,6 +9,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SertifikatController;
 use App\Http\Controllers\UndanganController;
 use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\VendorController;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -33,6 +34,8 @@ Route::post('/midtrans/notification', [PesananController::class, 'notificationHa
 Route::post('/midtrans/notification', [PesananController::class, 'notificationHandler']);
 Route::post('/payment/callback', [PesananController::class, 'callback'])->name('customer.payment.callback');
 Route::get('/pesanan/{id}', [PesananController::class, 'show'])->name('customer.pesanan.show');
+Route::get('/pesanan', [PesananController::class, 'index'])->name('customer.pesanan.index');
+
 
 // Halaman utama customer
 Route::get('/', function () {
@@ -76,6 +79,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/barang/datatables', [BarangController::class, 'datatables'])->name('barang.datatables');
     Route::post('/barang/cetak', [BarangController::class, 'cetakLabel'])->name('barang.cetak');
     Route::get('/barang/label', [BarangController::class, 'labelIndex'])->name('barang.label');
+    Route::get('/barang/scanner', [BarangController::class, 'scanner'])->name('barang.scanner');
+    Route::get('/barang/get/{id}', [BarangController::class, 'getBarang']);
     Route::resource('barang', BarangController::class);
 
     Route::get('/kota', function () {
@@ -102,6 +107,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/vendor/{id_vendor}/pesanan', [VendorController::class, 'pesanan'])->name('vendor.pesanan.index');
         Route::get('/vendor/{id_vendor}/pesanan/{id}', [VendorController::class, 'showPesanan'])->name('vendor.pesanan.show');
         Route::get('/vendor/{id_vendor}/pesanan/lunas', [VendorController::class, 'pesananLunas'])->name('vendor.pesanan.lunas');
+        Route::get('/vendor/scanner', [VendorController::class, 'scanner'])->name('vendor.scanner');
+        Route::get('/vendor/pesanan/{id}', [VendorController::class, 'getPesanan'])->name('vendor.getPesanan');
+
 
     // route untuk customer
     Route::get('/customer', [CustomerController::class, 'index'])->name('customer.data.index');
@@ -110,4 +118,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/customer/create-path', [CustomerController::class, 'createPath'])->name('customer.create.path');
     Route::post('/customer/store-path', [CustomerController::class, 'storePath'])->name('customer.store.path');     
     
+    Route::get('/kunjungan', [KunjunganController::class, 'index'])->name('kunjungan.index');
+    Route::get('/cek-toko/{barcode}', [KunjunganController::class, 'cekToko'])->name('kunjungan.cekToko');
+    Route::post('/kunjungan/store', [KunjunganController::class, 'store'])->name('kunjungan.store');
+    Route::get('/admin/toko', [KunjunganController::class, 'Tokoindex'])->name('toko.index');
+    Route::get('/admin/toko/cetak-qr/{barcode}', [KunjunganController::class, 'cetakQr'])->name('toko.cetakQr');
+    Route::get('/toko/create', [KunjunganController::class, 'create'])->name('toko.create');
+    Route::post('/toko/store', [KunjunganController::class, 'Tokostore'])->name('toko.store');
+
 });

@@ -105,4 +105,28 @@ class VendorController extends Controller
 
         return view('admin.vendor.pesanan.lunas', compact('pesanan', 'id_vendor'));
     }
+
+    public function scanner()
+    {
+        return view('admin.vendor.scanner');
+    }
+
+    public function getPesanan($id)
+    {
+        $pesanan = Pesanan::with('details.menu.vendor')->findOrFail($id);
+
+        return response()->json([
+            'id_pesanan' => $pesanan->id_pesanan,
+            'status' => $pesanan->status,
+            'menus' => $pesanan->details->map(function($d) {
+                return [
+                    'menu' => $d->menu->nama_menu,
+                    'vendor' => $d->vendor->nama_vendor,
+                    'jumlah' => $d->jumlah,
+                    'subtotal' => $d->subtotal
+                ];
+            })
+        ]);
+    }
+
 }

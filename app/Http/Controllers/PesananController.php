@@ -188,4 +188,11 @@ class PesananController extends Controller
 
         return view('customer.detailpesanan', compact('pesanan', 'dataUri'));
     }
+
+    public function index()
+    {
+        $pesananTerbaru = Pesanan::orderBy('id_pesanan', 'desc')->first();
+        return view('customer.pesanan', compact('pesananTerbaru'));
+    }
+
 }

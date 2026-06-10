@@ -39,6 +39,19 @@
             </div>
         </div>
     </div>
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="card h-100 shadow-sm border-0 bg-light">
+                <div class="card-body text-center">
+                    <h5 class="fw-bold">Validasi Pesanan</h5>
+                    <p class="small text-muted">Gunakan scanner untuk membaca QRcode customer.</p>
+                    <a href="{{ route('vendor.scanner') }}" class="btn btn-dark px-4">
+                        📷 Buka Scanner
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-lg-4 mb-4">

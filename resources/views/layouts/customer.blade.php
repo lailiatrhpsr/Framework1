@@ -96,6 +96,11 @@
                             </span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('customer.pesanan.index') }}">
+                            <i class="bi bi-receipt"></i> Pesanan Saya
+                        </a>
+                    </li>
                     <li class="nav-item ms-lg-3">
                         <button class="btn btn-purple rounded-pill px-4">Masuk</button>
                     </li>

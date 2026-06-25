@@ -11,7 +11,6 @@
             <div class="card shadow-sm border-0 rounded-3">
                 <div class="card-body p-4">
                     <h5 class="card-title fw-bold text-primary mb-3">Scan Barcode Toko</h5>
-                    
                     <div class="d-flex flex-column flex-md-row align-items-start gap-4">
                         <div style="width: 100%; max-width: 280px;"> <div id="reader" style="width:100%; min-height:180px;" class="border rounded-3 bg-light"></div>
                         </div>
@@ -22,7 +21,6 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -99,7 +97,6 @@
 let barcodeScanned = null;
 let salesPos = null;
 
-// [1] Callback ketika Barcode Sukses terbaca Kamera
 function onScanSuccess(decodedText) {
     if (barcodeScanned === decodedText) return; 
     
@@ -141,12 +138,9 @@ function onScanFailure(error) {
     console.warn("Mencari barcode...", error);
 }
 
-// Inisialisasi Scanner (qrbox disesuaikan 160 agar proporsional di kotak kecil)
 let scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 160 });
 scanner.render(onScanSuccess, onScanFailure);
 
-
-// [2] Logika GPS Pintar (Mengunci Akurasi Terbaik dalam Max 7 Detik)
 async function getAccuratePosition(targetAccuracy = 50, maxWait = 7000) {
     return new Promise((resolve, reject) => {
         let bestResult = null; 
@@ -212,8 +206,6 @@ document.getElementById('ambil-lokasi').addEventListener('click', async () => {
     }
 });
 
-
-// [3] Event Handler Tombol Kirim / Submit Kunjungan ke Backend
 document.getElementById('submit-kunjungan').addEventListener('click', () => {
     if (!barcodeScanned || !salesPos) {
         alert("Wajib melakukan scan barcode toko dan mengunci lokasi GPS terlebih dahulu!");
@@ -255,7 +247,6 @@ document.getElementById('submit-kunjungan').addEventListener('click', () => {
             </div>
         `;
 
-        // INJEKSI BARIS BARU KE TABEL HISTORY LAPTOP
         const emptyRow = document.getElementById('empty-row');
         if (emptyRow) emptyRow.remove(); 
 

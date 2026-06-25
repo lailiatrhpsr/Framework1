@@ -28,7 +28,7 @@
                         <div class="mb-3">
                             <label for="barcode" class="form-label">Kode / Barcode Unik Toko</label>
                             <input type="text" class="form-label form-control" id="barcode" name="barcode" placeholder="Contoh: TK-001 atau STR-ABC" value="{{ old('barcode') }}" required>
-                            <div class="form-text">Kode ini yang akan diubah menjadi QR Code untuk di-scan sales.</div>
+                            <div class="form-text">Kode ini akan diubah menjadi QR Code untuk di-scan sales.</div>
                         </div>
 
                         <div class="mb-3">

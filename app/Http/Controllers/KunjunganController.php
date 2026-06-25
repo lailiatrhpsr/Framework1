@@ -37,7 +37,6 @@ class KunjunganController extends Controller
         ]);
     }
     public function store(Request $request) {
-        // 1. Validasi input dari request AJAX/Fetch
         $request->validate([
             'barcode' => 'required|string',
             'lat_sales' => 'required|numeric',
@@ -45,10 +44,8 @@ class KunjunganController extends Controller
             'accuracy_sales' => 'required|numeric',
         ]);
 
-        // 2. Cari data toko berdasarkan string 'barcode' hasil scan 
         $toko = Toko::where('barcode', $request->barcode)->first();
 
-        // Jika barcode tidak ditemukan di database
         if (!$toko) {
             return response()->json([
                 'success' => false,
@@ -56,31 +53,25 @@ class KunjunganController extends Controller
             ], 404);
         }
 
-        // 3. Hitung jarak aktual posisi sales ke lokasi toko menggunakan rumus Haversine [cite: 14, 18]
         $jarakAktual = $this->haversine(
             $toko->latitude, $toko->longitude,
             $request->lat_sales, $request->lng_sales
         );
 
-        // 4. Hitung batas toleransi jarak (Threshold Efektif) [cite: 89]
-        // Formula: Batas standar (300m) + akurasi koordinat toko + akurasi koordinat sales [cite: 89]
         $thresholdEfektif = 300 + $toko->accuracy + $request->accuracy_sales;
-
         $status = $jarakAktual <= $thresholdEfektif ? "DITERIMA" : "DITOLAK";
-
         $kunjungan = Kunjungan::create([
-            'toko_id' => $toko->id, // Menggunakan ID auto-increment dari tabel toko
+            'toko_id' => $toko->id, 
             'lat_sales' => $request->lat_sales,
             'lng_sales' => $request->lng_sales,
             'accuracy_sales' => $request->accuracy_sales,
             'status' => $status
         ]);
 
-        // 6. Return response dalam bentuk JSON untuk diolah oleh JavaScript di View [cite: 40]
         return response()->json([
             'success' => true,
             'status' => $status,
-            'jarak' => round($jarakAktual, 2), // Pembulatan 2 angka di belakang koma (meter)
+            'jarak' => round($jarakAktual, 2), 
             'threshold' => round($thresholdEfektif, 2),
             'nama_toko' => $toko->nama_toko,
             'Waktu' => $kunjungan->created_at->format('d-m-Y H:i:s')
@@ -114,15 +105,13 @@ class KunjunganController extends Controller
             encoding: new Encoding('UTF-8'),
             size: 300,
             margin: 10,
-            foregroundColor: new Color(0, 0, 0),       // Warna Hitam
-            backgroundColor: new Color(255, 255, 255)  // Warna Putih
+            foregroundColor: new Color(0, 0, 0),       
+            backgroundColor: new Color(255, 255, 255)  
         );
 
-        // 3. Render objek menjadi file gambar PNG
         $writer = new PngWriter();
         $result = $writer->write($qrCode);
 
-        // 4. Download file gambar langsung ke browser admin
         return response($result->getString())
                 ->header('Content-Type', $result->getMimeType())
                 ->header('Content-Disposition', 'attachment; filename="QR_'.$toko->nama_toko.'.png"');
@@ -141,7 +130,6 @@ class KunjunganController extends Controller
             'accuracy' => 'required|numeric',
         ]);
 
-        // Simpan data ke database
         Toko::create([
             'barcode' => $request->barcode,
             'nama_toko' => $request->nama_toko,
@@ -150,7 +138,6 @@ class KunjunganController extends Controller
             'accuracy' => $request->accuracy,
         ]);
 
-        // Kembalikan ke halaman list toko dengan pesan sukses
         return redirect()->route('toko.index')->with('success', 'Toko baru berhasil didaftarkan!');
     }
 }

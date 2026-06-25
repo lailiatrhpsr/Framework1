@@ -10,6 +10,8 @@ use App\Http\Controllers\SertifikatController;
 use App\Http\Controllers\UndanganController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\KunjunganController;
+use App\Http\Controllers\AntrianController;
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\VendorController;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -36,6 +38,48 @@ Route::post('/payment/callback', [PesananController::class, 'callback'])->name('
 Route::get('/pesanan/{id}', [PesananController::class, 'show'])->name('customer.pesanan.show');
 Route::get('/pesanan', [PesananController::class, 'index'])->name('customer.pesanan.index');
 
+
+Route::get('/tes-db', function() {
+    return response()->json(\App\Models\Antrian::all());
+});
+
+// --------------------------------------------------
+// ROUTE SISTEM ANTRIAN DIGITAL REAL-TIME (SSE)
+// --------------------------------------------------
+
+// ─────────────────────────────────────────────
+//  Views
+// ─────────────────────────────────────────────
+Route::get('/guest',  [AntrianController::class, 'guest']);
+Route::get('/admin',  [AntrianController::class, 'admin']);
+Route::get('/papan',  [AntrianController::class, 'papan']);
+
+// ─────────────────────────────────────────────
+//  SSE stream (GET, tanpa CSRF)
+// ─────────────────────────────────────────────
+Route::get('/sse/antrian', [AntrianController::class, 'stream'])
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+// ─────────────────────────────────────────────
+//  API JSON
+// ─────────────────────────────────────────────
+Route::prefix('antrian')->group(function () {
+    // Guest: daftar antrian
+    Route::post('/daftar',              [AntrianController::class, 'daftar']);
+
+    // Admin: aksi
+    Route::post('/panggil',             [AntrianController::class, 'panggil']);
+    Route::patch('/{antrian}/selesai', [AntrianController::class, 'selesai']);
+    Route::patch('/{antrian}/terlewat', [AntrianController::class, 'terlewat']);
+    Route::patch('/{antrian}/ulang',    [AntrianController::class, 'panggilUlang']);
+
+    // Admin: baca data (fallback jika SSE putus)
+    Route::get('/data',                 [AntrianController::class, 'data']);
+});
+
+
+Route::get('/absensi-scanner', [AbsensiController::class, 'index']);
+Route::post('/absensi-scan', [AbsensiController::class, 'store']);
 
 // Halaman utama customer
 Route::get('/', function () {
